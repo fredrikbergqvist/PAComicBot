@@ -27,7 +27,8 @@ module.exports = async (request, response) => {
   // Only respond to POST requests
 
   if (request.method === "GET") {
-    return response.status(200).send({ link: getRssFile() });
+    const latestComic = await getRssFile();
+    return response.status(200).send({ latestComic });
   }
 
 
