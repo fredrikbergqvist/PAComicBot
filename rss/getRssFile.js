@@ -9,7 +9,7 @@ export async function getRssFile() {
   });
   const parser = new XMLParser();
   const feed = parser.parse(buffer.toString());
-  let latestComic = null;
+  let latestComic = undefined;
   for (const item of feed.rss.channel.item) {
     if(item.title.startsWith("Comic:")){
       latestComic = item;

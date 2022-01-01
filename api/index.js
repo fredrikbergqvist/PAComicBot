@@ -4,6 +4,7 @@ const {
   verifyKey,
 } = require("discord-interactions");
 const getRawBody = require("raw-body");
+const { getRssFile } = require("../rss/getRssFile");
 
 const INVITE_COMMAND = {
   name: "Invite",
@@ -24,6 +25,12 @@ const INVITE_URL = `https://discord.com/oauth2/authorize?client_id=${process.env
  */
 module.exports = async (request, response) => {
   // Only respond to POST requests
+
+  if (request.method === "GET") {
+    return response.status(200).send({ link: getRssFile() });
+  }
+
+
   if (request.method === "POST") {
     // Verify the request
     const signature = request.headers["x-signature-ed25519"];
