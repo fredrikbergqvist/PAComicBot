@@ -46,8 +46,11 @@ module.exports = async (request, response) => {
     );
 
     if (!isValidRequest) {
-      console.error("Invalid Request");
-      return response.status(401).send({ error: "Bad request signature " });
+      console.error("Invalid Request",{rawBody,
+        signature,
+        timestamp,
+        key:process.env.PUBLIC_KEY});
+      return response.status(401).send({ error: "Bad request signature" });
     }
 
     // Handle the request
