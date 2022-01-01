@@ -5,6 +5,7 @@ const {
 } = require("discord-interactions");
 const getRawBody = require("raw-body");
 const { getRssFile } = require("../rss/getRssFile");
+const { Client, Intents } = require('discord.js');
 
 const INVITE_COMMAND = {
   name: "Invite",
@@ -27,7 +28,17 @@ module.exports = async (request, response) => {
   // Only respond to POST requests
 
   if (request.method === "GET") {
+    const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
     const latestComic = await getRssFile();
+    client.once("ready", () => {
+      console.log(`Online as ${client.user.tag}`);
+
+        const guild = client.guilds.cache.get('id');
+        const channel = guild.channels.cache.get('id');
+        channel.send(latestComic.link);
+
+    });
+
     return response.status(200).send({ latestComic });
   }
 
